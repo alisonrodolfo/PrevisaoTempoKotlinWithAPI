@@ -60,7 +60,7 @@ pronta: https://github.com/android/architecture-samples ou https://github.com/an
 
 <p align="center">
 	<br>
-	<img src="app/src/main/assets/print.PNG"/ >
+	<img src="prints/print.PNG"/ >
       <br>
 </p>
 
