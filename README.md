@@ -1,4 +1,74 @@
-# Android Architecture Blueprints v2
+Previsao Tempo Kotlin With API
+
+As informações devem ser recuperadas de um Web Services de terceiros ativo (ver lista em: https://www.programmableweb.com/) 
+ou serviço de base de dados remota (por exemplo, usando Firebase ou outro SDK); ✅
+
+Deve ter uma lista de entidades padrão (pré-baixadas) no aplicativo (por exemplo, na aplicação de previsão de tempo já 
+abre com as cidades Barcelona, Dublin, Londres, Nova York); ✅
+
+O usuário deve poder adicionar uma nova entidade a partir do web services (por exemplo, uma nova cidade); ✅
+
+O usuário deve poder remover uma entidade da lista (por exemplo, remover uma cidade da lista de cidades); ✅
+
+Todas as alterações devem ser persistentes. Se o usuário adicionar ou remover uma entidade, a alteração deverá persistir 
+quando o aplicativo for reiniciado; ✅
+
+Os dados que já foram recuperados do Web Services também devem ser persistidos localmente de modo que o usuário possa 
+acessar esses dados mesmo sem conexão com a Internet; ✅
+
+O aplicativo deve apresentar os dados de entidade em dois modos (retrato e paisagem) de exibição gráfica com Views 
+diferentes (por exemplo, mostra a previsão de tempo de uma cidade numa tabela no modo retrato e um gráfico no modo paisagem); ✅
+
+Utilizar pelo menos um componente (JetPack) da arquitetura de referencia do guia do desenvolvedor 
+(https://developer.android.com/jetpack/docs/guide).  Recomenda-se usar um modelo de arquitetura 
+pronta: https://github.com/android/architecture-samples ou https://github.com/android/architecture-samples/branches ✅
+
+
+```kotlin
+ internal fun getCurrentData() {
+        val retrofit = Retrofit.Builder()
+                .baseUrl(BaseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        val service = retrofit.create(WeatherService::class.java)
+        val call = service.getCurrentWeatherData(if (title.isNotEmpty()) title else "João Pessoa", lang, units, AppId)
+        call.enqueue(object : Callback<WeatherResponse> {
+            override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
+                if (response.code() == 200) {
+                    val weatherResponse = response.body()!!
+
+                    tempmax = "" + weatherResponse.main!!.temp_max +"º max"
+                    tempmin = "" + weatherResponse.main!!.temp_min +"º min"
+                    temperatura = "Temp: " + weatherResponse.main!!.temp +"º " + weatherResponse.weather[0].description
+                    previsao = "" + weatherResponse.weather[0].description
+                    
+
+                    probchuvahum = "Probabilidade de chuva: "+ weatherResponse.clouds!!.all+"% - umidade: "+ weatherResponse.main!!.humidity+"%"
+                }
+            }
+
+            override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
+
+            }
+        })
+    }
+```
+
+
+Implementado com:
+When you're ready to see everything that Expo provides (or if you want to use your own editor) you can **Export** your project and use it with [expo-cli](https://docs.expo.io/versions/latest/introduction/installation.html).
+
+
+
+# Tela
+
+<p align="center">
+	<br>
+	<img src="images/print.PNG"/ >
+      <br>
+</p>
+
+
 <p align="center">
 <img src="https://github.com/googlesamples/android-architecture/wiki/images/aab-logov2.png" alt="Illustration by Virginia Poltrack"/>
 </p>
@@ -25,41 +95,7 @@ This project hosts each sample app in separate repository branches. For more inf
 | [dagger-android](https://github.com/googlesamples/android-architecture/tree/dagger-android)<br/>[[compare](https://github.com/googlesamples/android-architecture/compare/dagger-android#files_bucket)] | A simple Dagger setup that uses `dagger-android` and removes the two flavors. |
 | [usecases](https://github.com/googlesamples/android-architecture/tree/usecases)<br/>[[compare](https://github.com/googlesamples/android-architecture/compare/usecases#files_bucket)] | Adds a new domain layer that uses UseCases for business logic. |
 
-### Old samples - Kotlin and Java
 
-Blueprints v1 had a collection of samples that are not maintained anymore, but can still be useful. See [all project branches](https://github.com/googlesamples/android-architecture/branches).
-
-## Why a to-do app?
-
-<img align="right" src="https://github.com/googlesamples/android-architecture/wiki/images/todoapp.gif" alt="A demo illustraating the UI of the app" width="288" height="512" style="display: inline; float: right"/>
-
-The app in this project aims to be simple enough that you can understand it quickly, but complex enough to showcase difficult design decisions and testing scenarios. For more information, see the [app's specification](https://github.com/googlesamples/android-architecture/wiki/To-do-app-specification).
-
-## What is it not?
-
-*   A UI/Material Design sample. The interface of the app is deliberately kept simple to focus on architecture. Check out [Plaid](https://github.com/android/plaid) instead.
-*   A complete Jetpack sample covering all libraries. Check out [Android Sunflower](https://github.com/googlesamples/android-sunflower) or the advanced [Github Browser Sample](https://github.com/googlesamples/android-architecture-components/tree/master/GithubBrowserSample) instead.
-*   A real production app with network access, user authentication, etc. Check out the [Google I/O app](https://github.com/google/iosched), [Santa Tracker](https://github.com/google/santa-tracker-android) or [Tivi](https://github.com/chrisbanes/tivi) for that.
-
-## Who is it for?
-
-*   Intermediate developers and beginners looking for a way to structure their app in a testable and maintainable way.
-*   Advanced developers looking for quick reference.
-
-## Opening a sample in Android Studio
-
-To open one of the samples in Android Studio, begin by checking out one of the sample branches, and then open the root directory in Android Studio. The following series of steps illustrate how to open the [usecases](tree/usecases/) sample.
-
-Clone the repository:
-
-```
-git clone git@github.com:googlesamples/android-architecture.git
-```
-This step checks out the master branch. If you want to change to a different sample: 
-
-```
-git checkout usecases
-```
 
 **Note:** To review a different sample, replace `usecases` with the name of sample you want to check out.
 
