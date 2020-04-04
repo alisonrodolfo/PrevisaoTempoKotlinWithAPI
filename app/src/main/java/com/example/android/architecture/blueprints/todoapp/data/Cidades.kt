@@ -115,26 +115,6 @@ data class Cidades @JvmOverloads constructor(
                     previsao = "" + weatherResponse.weather[0].description
 
 
-                    val stringBuilder = "Country: " +
-                            weatherResponse.sys!!.country +
-                            "\n" +
-                            "Temperature: " +
-                            weatherResponse.main!!.temp +
-                            "\n" +
-                            "Temperature(Min): " +
-                            weatherResponse.main!!.temp_min +
-                            "\n" +
-                            "Temperature(Max): " +
-                            weatherResponse.main!!.temp_max +
-                            "\n" +
-                            "Humidity: " +
-                            weatherResponse.main!!.humidity +
-                            "\n" +
-                            "Pressure: " +
-                            weatherResponse.main!!.pressure
-
-                    Log.d("Clima",stringBuilder)
-
                     probchuvahum = "Probabilidade de chuva: "+ weatherResponse.clouds!!.all+"% - umidade: "+ weatherResponse.main!!.humidity+"%"
                 }
             }
